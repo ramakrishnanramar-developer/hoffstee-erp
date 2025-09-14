@@ -13,6 +13,21 @@
   }
 }
 
+body {
+ 
+    font-family: "Schibsted Grotesk", "Montserrat", sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+    line-height: 1.375rem;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    margin:0
+}
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

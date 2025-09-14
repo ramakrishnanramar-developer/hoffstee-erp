@@ -1,0 +1,202 @@
+.erp-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+
+.erp-logo {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.erp-search {
+    display: flex;
+    align-items: center;
+    background-color: #f2f3f4;
+    border-radius: 6px;
+    padding: 13px 10px;
+    width: 100%;
+    color: #333;
+}
+
+.search-icon {
+  margin-right: 8px;
+  font-size: 16px;
+  color: #666;
+}
+
+.erp-search input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    font-size: 14px;
+    background: #f2f3f4;
+}
+
+.shortcut {
+  font-size: 12px;
+  color: #999;
+  margin-left: 8px;
+}
+
+.erp-icons {
+  display: flex;
+  gap: 16px;
+}
+
+.erp-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.erp-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.erp-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #3c5a99;
+}
+
+.erp-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.erp-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background-color: #28c76f;
+  border-radius: 50%;
+  border: 2px solid #002b5c;
+}
+
+.dropdown-arrow {
+  font-size: 14px;
+  color: white;
+}
+
+.erp-role {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.erp-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: #fff;
+  color: #002b5c;
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  width: 180px;
+  z-index: 10;
+}
+
+.erp-dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.dropdown-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+
+.dropdown-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.dropdown-role {
+  font-size: 12px;
+  color: #28c76f;
+}
+
+.erp-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dropdown-icon {
+  font-size: 16px;
+  color: #002b5c;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: #002b5c;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.category-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.module-icon {
+  font-size: 16px;
+  color: #ffd700;
+}
+
+.category-right {
+  margin-left: auto;
+}
+
+
+.erp-header {
+      display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 12px 20px;
+    color: #052c65;
+    box-shadow: 5px 5px 5px 5px #e0e0e02e;
+    margin: 20px;
+}
+
+.erp-left {
+      display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 30%;
+}
+
+.erp-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.erp-icons {
+  display: flex;
+  gap: 25px;
+}
