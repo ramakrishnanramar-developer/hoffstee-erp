@@ -1,0 +1,14 @@
+
+
+.grouped-table {
+  margin-top: 20px;
+}
+
+.group-header {
+  background: #2e7d32;
+  color: white;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px 6px 0 0;
+  margin-top: 20px;
+}

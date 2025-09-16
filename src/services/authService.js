@@ -462,3 +462,131 @@ export const deleteUserRole = async (id) => {
     throw error;
   }
 };
+// get Ledger
+export const getLedgers = async () => {
+  try {
+    const response = await api.get('/Ledgers');
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('GET /Ledgers failed:', error);
+    throw error;
+  }
+};
+
+//create Ledger
+
+export const createLedger = async (data) => {
+  try {
+    const response = await api.post('/Ledgers', data);
+    return response.data;
+  } catch (error) {
+    console.error('POST/Ledgers failed:', error);
+    throw error;
+  }
+};
+
+//get Ledger ById
+
+export const getLedgerById = async (id) => {
+  try {
+    const response = await api.get(`/Ledgers/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`GET /Ledgers/${id} failed:`, error);
+    throw error;
+  }
+};
+
+//update Ledger
+
+export const updateLedger = async (id, data) => {
+  try {
+    const response = await api.put(`/Ledgers/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error(`PUT /Ledgers/${id} failed:`, error);
+    throw error;
+  }
+};
+
+// delete Ledger
+
+export const deleteLedger = async (id) => {
+  try {
+    const response = await api.delete(`/Ledgers/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`DELETE /Ledgers/${id} failed:`, error);
+    throw error;
+  }
+};
+export const getParentLedgers = async (id) => {
+  try {
+    const response = await api.get(`/Ledgers/dropdown`);
+    return response.data;
+  } catch (error) {
+    console.error(`GET /Ledgers/dropdown failed:`, error);
+    throw error;
+  }
+};
+
+// get AccountGroups
+export const getAccountGroups = async () => {
+  try {
+    const response = await api.get('/AccountGroups');
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('GET /AccountGroups failed:', error);
+    throw error;
+  }
+};
+
+//createUsers
+
+export const createAccountGroup = async (data) => {
+  try {
+    const response = await api.post('/AccountGroups', data);
+    return response.data;
+  } catch (error) {
+    console.error('POST/AccountGroups failed:', error);
+    throw error;
+  }
+};
+
+//getUsersById
+
+export const getAccountGroupById = async (id) => {
+  try {
+    const response = await api.get(`/AccountGroups/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`GET /AccountGroups/${id} failed:`, error);
+    throw error;
+  }
+};
+
+//updateModule
+
+export const updateAccountGroup = async (id, data) => {
+  try {
+    const response = await api.put(`/AccountGroups/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error(`PUT /AccountGroups/${id} failed:`, error);
+    throw error;
+  }
+};
+
+// deleteUsers
+
+export const deleteAccountGroup = async (id) => {
+  try {
+    const response = await api.delete(`/AccountGroups/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`DELETE /AccountGroups/${id} failed:`, error);
+    throw error;
+  }
+};

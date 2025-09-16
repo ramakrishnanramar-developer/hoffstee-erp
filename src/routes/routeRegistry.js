@@ -9,7 +9,9 @@ import ModuleAddPages from '../pages/ModuleAddPages';
 import Company from '../pages/Company';
 import UserPage from '../pages/UserPage';
 import RolesPage from '../pages/RolesPage';
-import UserRolesPage from '../pages/UserRolesPage'
+import UserRolesPage from '../pages/UserRolesPage';
+import AccountGroupsPage from '../pages/AccountGroupsPage';
+import LedgersPage from '../pages/LedgersPage';
 
 export const routeRegistry = {
   '/dashboard': Dashboard,
@@ -23,5 +25,7 @@ export const routeRegistry = {
   '/company':Company,
   '/users':UserPage,
   '/roles':RolesPage,
-  '/userroles':UserRolesPage
+  '/userroles':UserRolesPage,
+  '/accountgroups':AccountGroupsPage,
+  '/ledgers':LedgersPage
 };
