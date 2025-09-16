@@ -1,0 +1,262 @@
+.modules-page {
+  padding: 0 32px ;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.modules-header {
+  background: linear-gradient(to right, #3c5a99, #5a78c0);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.modules-header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.modules-header p {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.create-btn {
+  margin: 35px 0;
+  padding: 10px 16px;
+  background-color: #3c5a99;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.module-table th {
+  background-color: #3c5a99;
+  color: white;
+  font-weight: 600;
+  padding: 12px;
+  text-align: left;
+}
+
+
+
+.module-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.module-form input {
+  padding: 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.module-form input.error {
+  border-color: #d93025;
+  background-color: #fff5f5;
+}
+
+.module-form button {
+    padding: 20px 16px;
+    background-color: #3c5a99;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.module-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.module-table th,
+.module-table td {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+  outline: none;
+}
+
+.form-select option {
+  padding: 8px;
+}
+
+.module-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.module-table tr:hover {
+  background-color: #f0f4ff;
+}
+
+.action-btn {
+  padding: 13px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 25px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.action-btn.edit {
+  background-color: #e0f0ff;
+  color: #1a73e8;
+}
+
+.action-btn.delete {
+  background-color: #ffe0e0;
+  color: #d93025;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #3c5a99;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.edit-modal {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.edit-modal h3 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #3c5a99;
+}
+
+.confirm-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.confirm-box {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  text-align: center;
+  max-width: 400px;
+}
+
+.confirm-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.confirm-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.confirm-btn.delete {
+  background-color: #ffe0e0;
+  color: #ff0000;
+}
+
+.confirm-btn.cancel {
+  background-color: #eee;
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  .module-form {
+    grid-template-columns: 1fr;
+  }
+
+  .module-table th,
+  .module-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .action-btn {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+}

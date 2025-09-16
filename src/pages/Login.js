@@ -82,19 +82,7 @@ const Login = () => {
 
         <button type="submit" className="sign-in-btn">SIGN IN</button>
 
-        <div className="divider">OR</div>
-
-        <button className="google-btn">
-          <i className="fab fa-google"></i> Continue with Google
-        </button>
-        <button className="apple-btn">
-          <i className="fab fa-apple"></i> Continue with Apple
-        </button>
-
-        {/* Optional: Signup prompt */}
-        {/* <p className="signup-prompt">
-          New here? <span onClick={() => navigate('/register')}>Create an account</span>
-        </p> */}
+       
       </form>
     </div>
   );
