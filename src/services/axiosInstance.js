@@ -2,7 +2,8 @@ import axios from 'axios';
 import { refreshTokendata } from '../services/authService';
 
 const api = axios.create({
-  baseURL: 'https://localhost:7260/api',
+    //baseURL: 'https://localhost:7260/api',
+    baseURL: 'https://hoffstee.azurewebsites.net/api',
 });
 
 // 🔐 Request Interceptor
