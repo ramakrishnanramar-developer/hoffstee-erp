@@ -1,4 +1,5 @@
 // routeRegistry.js
+import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import VoucherEntry from '../pages/VoucherEntry';
 import TrialBalance from '../pages/TrialBalance';
@@ -14,8 +15,10 @@ import AccountGroupsPage from '../pages/AccountGroupsPage';
 import LedgersPage from '../pages/LedgersPage';
 import TaxMasterPage from '../pages/TaxMasterPage';
 import VoucherTypesPage from '../pages/VoucherTypesPage';
+import UserRolePermissions from '../pages/UserRolePermissions';
 
 export const routeRegistry = {
+    '/login': Login,
     '/dashboard': Dashboard,
     '/finance/voucher': VoucherEntry,
     '/finance/trialbalance': TrialBalance,
@@ -31,5 +34,6 @@ export const routeRegistry = {
     '/accountgroups': AccountGroupsPage,
     '/ledgers': LedgersPage,
     '/taxmasters': TaxMasterPage,
-    '/vouchertypes': VoucherTypesPage
+    '/vouchertypes': VoucherTypesPage,
+    '/userrolepermissions': UserRolePermissions
 };

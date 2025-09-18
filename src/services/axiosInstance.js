@@ -2,8 +2,8 @@ import axios from 'axios';
 import { refreshTokendata } from '../services/authService';
 
 const api = axios.create({
-    //baseURL: 'https://localhost:7260/api',
-    baseURL: 'https://hoffstee.azurewebsites.net/api',
+    baseURL: 'https://localhost:7260/api',
+    //baseURL: 'https://hoffstee.azurewebsites.net/api',
 });
 
 // 🔐 Request Interceptor
@@ -43,8 +43,8 @@ api.interceptors.response.use(
         // });
         
         const res = await refreshTokendata(accessToken, refreshToken);
-        const newAccessToken = res.data.accessToken;
-        const newRefreshToken = res.data.refreshToken;
+          const newAccessToken = res.data.output.accessToken;
+          const newRefreshToken = res.data.output.refreshToken;
 
         // Store new tokens
         localStorage.setItem('accessToken', newAccessToken);

@@ -2,11 +2,31 @@
 import axios from 'axios';
 import api from './axiosInstance';
 
-//export const BASE_URL = 'https://localhost:7260/api';
-export const BASE_URL = 'https://hoffstee.azurewebsites.net/api';
+export const BASE_URL = 'https://localhost:7260/api';
+//export const BASE_URL = 'https://hoffstee.azurewebsites.net/api';
 
-export const login = (email, password) => {
-    return axios.post(`${BASE_URL}/Auth/login`, { email, password });
+// POST / PUT Generic error handling function
+const handlePostPutError = (error, action, endpoint) => {
+    if (error.response && error.response.data) {
+        console.error(`${action} ${endpoint} failed:`, error.response.data);
+        throw new Error(error.response.data.Message || `${action} failed`);
+    } else {
+        console.error(`${action} ${endpoint} failed:`, error.message);
+        throw new Error(`${action} failed`);
+    }
+};
+
+
+//export const login = (email, password) => {
+//    return axios.post(`${BASE_URL}/Auth/login`, { email, password });
+//};
+export const login = async (email, password) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/Auth/login`, { email, password });
+        return response;
+    } catch (error) {
+        handlePostPutError(error, 'POST', `/Auth/login`);
+    }
 };
 
 export const refreshTokendata = (accessToken, refreshToken) => {
@@ -31,6 +51,7 @@ export const getUserById = async (id) => {
     const response = await api.get(`/Users/${id}`);
     return response.data.output || response.data;
 };
+
 
 
 // src/services/authService.js
@@ -62,8 +83,7 @@ export const createModule = async (data) => {
         const response = await api.post('/Modules', data);
         return response.data;
     } catch (error) {
-        console.error('POST/Modules failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/Modules`);
     }
 };
 
@@ -86,8 +106,7 @@ export const updateModule = async (id, data) => {
         const response = await api.put(`/Modules/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /Modules/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/Modules/${id}`);
     }
 };
 
@@ -121,8 +140,7 @@ export const createSubModule = async (data) => {
         const response = await api.post('/SubModule', data);
         return response.data;
     } catch (error) {
-        console.error('POST/SubModules failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/SubModule`);
     }
 };
 
@@ -145,8 +163,7 @@ export const updateSubModule = async (id, data) => {
         const response = await api.put(`/SubModule/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /SubModules/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/SubModule/${id}`);
     }
 };
 
@@ -179,8 +196,7 @@ export const createModulePages = async (data) => {
         const response = await api.post('/ModulePage', data);
         return response.data;
     } catch (error) {
-        console.error('POST/ModulePages failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/ModulePage`);
     }
 };
 
@@ -203,7 +219,7 @@ export const updateModulePages = async (id, data) => {
         const response = await api.put(`/ModulePage/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /ModulePages/${id} failed:`, error);
+        handlePostPutError(error, 'PUT', `/ModulePage/${id}`);
         throw error;
     }
 };
@@ -258,8 +274,7 @@ export const createCompany = async (data) => {
         const response = await api.post('/Companies', data);
         return response.data;
     } catch (error) {
-        console.error('POST/company failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/Companies`);
     }
 };
 
@@ -282,8 +297,7 @@ export const updateCompany = async (id, data) => {
         const response = await api.put(`/Companies/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /company/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/Companies/${id}`);
     }
 };
 
@@ -318,8 +332,7 @@ export const createUsers = async (data) => {
         const response = await api.post('/Users', data);
         return response.data;
     } catch (error) {
-        console.error('POST/Users failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/Users`);
     }
 };
 
@@ -342,8 +355,7 @@ export const updateUsers = async (id, data) => {
         const response = await api.put(`/Users/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /Users/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/Users/${id}`);
     }
 };
 
@@ -377,8 +389,7 @@ export const createRole = async (data) => {
         const response = await api.post('/roles', data);
         return response.data;
     } catch (error) {
-        console.error('POST/roles failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/roles`);
     }
 };
 
@@ -401,8 +412,7 @@ export const updateRole = async (id, data) => {
         const response = await api.put(`/roles/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /roles/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/roles/${id}`);
     }
 };
 
@@ -437,8 +447,7 @@ export const createUserRole = async (data) => {
         const response = await api.post('/UserRoles/assign', data);
         return response.data;
     } catch (error) {
-        console.error('POST/roles failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/UserRoles/assign`);
     }
 };
 
@@ -482,8 +491,7 @@ export const createLedger = async (data) => {
         const response = await api.post('/Ledgers', data);
         return response.data;
     } catch (error) {
-        console.error('POST/Ledgers failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/Ledgers`);
     }
 };
 
@@ -506,8 +514,7 @@ export const updateLedger = async (id, data) => {
         const response = await api.put(`/Ledgers/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /Ledgers/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/Ledgers/${id}`);
     }
 };
 
@@ -551,8 +558,7 @@ export const createAccountGroup = async (data) => {
         const response = await api.post('/AccountGroups', data);
         return response.data;
     } catch (error) {
-        console.error('POST/AccountGroups failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/AccountGroups`);
     }
 };
 
@@ -575,8 +581,7 @@ export const updateAccountGroup = async (id, data) => {
         const response = await api.put(`/AccountGroups/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /AccountGroups/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/AccountGroups/${id}`);
     }
 };
 
@@ -611,8 +616,7 @@ export const createTax = async (data) => {
         const response = await api.post('/TaxMasters', data);
         return response.data;
     } catch (error) {
-        console.error('POST/TaxMasters failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/TaxMasters`);
     }
 };
 
@@ -635,8 +639,7 @@ export const updateTax = async (id, data) => {
         const response = await api.put(`/TaxMasters/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /TaxMasters/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/TaxMasters/${id}`);
     }
 };
 
@@ -668,8 +671,7 @@ export const createVoucherType = async (data) => {
         const response = await api.post('/VoucherTypes', data);
         return response.data;
     } catch (error) {
-        console.error('POST/VoucherTypes failed:', error);
-        throw error;
+        handlePostPutError(error, 'POST', `/VoucherTypes`);
     }
 };
 export const getVoucherTypeById = async (id) => {
@@ -686,8 +688,7 @@ export const updateVoucherType = async (id, data) => {
         const response = await api.put(`/VoucherTypes/${id}`, data);
         return response.data;
     } catch (error) {
-        console.error(`PUT /VoucherTypes/${id} failed:`, error);
-        throw error;
+        handlePostPutError(error, 'PUT', `/VoucherTypes/${id}`);
     }
 };
 export const deleteVoucherType = async (id) => {
@@ -696,6 +697,32 @@ export const deleteVoucherType = async (id) => {
         return response.data;
     } catch (error) {
         console.error(`DELETE /VoucherTypes/${id} failed:`, error);
+        throw error;
+    }
+};
+export const getPermissionsByUserRole = async (userRoleId) => {
+    try {
+        const response = await api.get(`/PageAccessPermission/userrole/${userRoleId}`);
+        return response.data;
+    } catch (error) {
+        console.error("GET /PageAccessPermission failed:", error);
+        throw error;
+    }
+};
+export const updatePermissions = async (payload) => {
+    try {
+        const response = await api.post(`/PageAccessPermission/update`, payload);
+        return response.data;
+    } catch (error) {
+        handlePostPutError(error, 'POST', `/PageAccessPermission/update`);
+    }
+};
+export const getPermissionsByPage = async (page) => {
+    try {
+        const response = await api.get(`/PageAccessPermission/page/${page}`);
+        return response.data;
+    } catch (error) {
+        console.error("GET /PageAccessPermission failed:", error);
         throw error;
     }
 };

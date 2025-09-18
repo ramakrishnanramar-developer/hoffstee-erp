@@ -6,10 +6,12 @@ import {
     createTax,
     getTaxById,
     updateTax,
-    deleteTax
+    deleteTax,
+    getPermissionsByPage
 } from '../services/authService';
 import 'react-toastify/dist/ReactToastify.css';
 import './SubModulesPage.css';
+import STRINGS from "../constants/strings";
 
 Modal.setAppElement('#root');
 
@@ -26,17 +28,35 @@ const TaxMasterPage = () => {
     const [editingId, setEditingId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+    const [permissions, setPermissions] = useState({
+        isAdd: false,
+        isEdit: false,
+        isView: false,
+        isDelete: false,
+        isPrint: false,
+        isDownload: false
+    });
 
     useEffect(() => {
+        loadPermissions();
         loadTaxes();
     }, []);
+
+    const loadPermissions = async () => {
+        try {
+            const data = await getPermissionsByPage(STRINGS.PAGES.TAXMASTER);
+            console.log(data);
+            setPermissions(data.output || {});
+        } catch (err) {
+            toast.error('Failed to load permissions');
+        }
+    };
 
     const loadTaxes = async () => {
         try {
             const data = await getTaxes();
             const list = Array.isArray(data) ? data : data?.output || [];
             setTaxes(list);
-            console.log("The Taxes Data:", list);
         } catch (err) {
             toast.error('Failed to load taxes');
         }
@@ -68,20 +88,10 @@ const TaxMasterPage = () => {
                 toast.success('Tax created successfully');
             }
 
-            setFormData({
-                id: null,
-                taxName: '',
-                taxRate: '',
-                effectiveFrom: '',
-                effectiveTo: '',
-                isActive: true
-            });
-            setEditingId(null);
-            setIsModalOpen(false);
+            resetForm();
             loadTaxes();
         } catch (err) {
-            console.error('Save failed:', err.response?.data || err.message);
-            toast.error('Save failed');
+            toast.error(err.message);
         }
     };
 
@@ -107,13 +117,10 @@ const TaxMasterPage = () => {
             setIsModalOpen(true);
         } catch (err) {
             toast.error('Failed to load tax details');
-            console.error('Tax fetch failed:', err);
         }
     };
 
-    const handleDeleteRequest = (id) => {
-        setConfirmDeleteId(id);
-    };
+    const handleDeleteRequest = (id) => setConfirmDeleteId(id);
 
     const handleDelete = async (id) => {
         try {
@@ -126,27 +133,76 @@ const TaxMasterPage = () => {
         }
     };
 
+    const resetForm = () => {
+        setFormData({
+            id: null,
+            taxName: '',
+            taxRate: '',
+            effectiveFrom: '',
+            effectiveTo: '',
+            isActive: true
+        });
+        setEditingId(null);
+        setIsModalOpen(false);
+    };
+
     return (
         <div className="modules-page">
             <h2>💰 Taxes Management</h2>
-            <button className="create-btn mt4" onClick={() => setIsModalOpen(true)}>
-                Create Tax
-            </button>
 
+            {/* Show Create button only if isAdd = true */}
+            {permissions.isAdd && (
+                <button className="create-btn mt4" onClick={() => setIsModalOpen(true)}>
+                    Create Tax
+                </button>
+            )}
+
+            {/* Show Grid only if isView = true */}
+            {permissions.isView && (
+                <table className="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tax Name</th>
+                            <th>Rate (%)</th>
+                            <th>Effective From</th>
+                            <th>Effective To</th>
+                            <th>Status</th>
+                            {(permissions.isEdit || permissions.isDelete) && (
+                                <th>Actions</th>
+                            )}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Array.isArray(taxes) && taxes.map((tax) => (
+                            <tr key={tax.id}>
+                                <td>{tax.id}</td>
+                                <td>{tax.taxName}</td>
+                                <td>{tax.taxRate}</td>
+                                <td>{tax.effectiveFrom ? tax.effectiveFrom.split('T')[0] : ''}</td>
+                                <td>{tax.effectiveTo ? tax.effectiveTo.split('T')[0] : ''}</td>
+                                <td>{tax.isActive ? 'Active' : 'Inactive'}</td>
+                                <td>
+                                    {/* Show Edit only if isEdit = true */}
+                                    {permissions.isEdit && (
+                                        <button className="action-btn edit" onClick={() => handleEdit(tax.id)}>✏️ Edit</button>
+                                    )}
+
+                                    {/* Show Delete only if isDelete = true */}
+                                    {permissions.isDelete && (
+                                        <button className="action-btn delete" onClick={() => handleDeleteRequest(tax.id)}>🗑️ Delete</button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+
+            {/* Modal */}
             <Modal
                 isOpen={isModalOpen}
-                onRequestClose={() => {
-                    setIsModalOpen(false);
-                    setFormData({
-                        id: null,
-                        taxName: '',
-                        taxRate: '',
-                        effectiveFrom: '',
-                        effectiveTo: '',
-                        isActive: true
-                    });
-                    setEditingId(null);
-                }}
+                onRequestClose={resetForm}
                 className="edit-modal"
             >
                 <h3>{editingId ? 'Edit Tax' : 'Create Tax'}</h3>
@@ -199,36 +255,7 @@ const TaxMasterPage = () => {
                 </form>
             </Modal>
 
-            <table className="module-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tax Name</th>
-                        <th>Rate (%)</th>
-                        <th>Effective From</th>
-                        <th>Effective To</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.isArray(taxes) && taxes.map((tax) => (
-                        <tr key={tax.id}>
-                            <td>{tax.id}</td>
-                            <td>{tax.taxName}</td>
-                            <td>{tax.taxRate}</td>
-                            <td>{tax.effectiveFrom ? tax.effectiveFrom.split('T')[0] : ''}</td>
-                            <td>{tax.effectiveTo ? tax.effectiveTo.split('T')[0] : ''}</td>
-                            <td>{tax.isActive ? 'Active' : 'Inactive'}</td>
-                            <td>
-                                <button className="action-btn edit" onClick={() => handleEdit(tax.id)}>✏️ Edit</button>
-                                <button className="action-btn delete" onClick={() => handleDeleteRequest(tax.id)}>🗑️ Delete</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
+            {/* Confirm Delete */}
             {confirmDeleteId !== null && (
                 <div className="confirm-modal">
                     <div className="confirm-box">
