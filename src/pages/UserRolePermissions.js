@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import './company.css';
 
 Modal.setAppElement("#root");
-const actions = ["Add", "Edit", "View", "Delete", "Print", "Download"];
+const actions = ["Add", "Edit", "View", "Delete", "Print", "Download", "Post"];
 
 const UserRolePermissions = () => {
     const [roles, setRoles] = useState([]);
@@ -27,6 +27,7 @@ const UserRolePermissions = () => {
         isDelete: false,
         isPrint: false,
         isDownload: false,
+        isPost: false
     });
 
     useEffect(() => {
@@ -102,6 +103,7 @@ const UserRolePermissions = () => {
                     Delete: !!(p.delete ?? p.Delete ?? p.isDelete ?? p.IsDelete),
                     Print: !!(p.print ?? p.Print ?? p.isPrint ?? p.IsPrint),
                     Download: !!(p.download ?? p.Download ?? p.isDownload ?? p.IsDownload),
+                    Post: !!(p.post ?? p.Post ?? p.isPost ?? p.IsPost),
                 };
             });
 
@@ -113,7 +115,7 @@ const UserRolePermissions = () => {
     };
 
     const togglePermission = (pageId, action) => {
-        if (!pagePermissions[`is${action}`]) return; // 🔒 Respect action-level permission
+        //if (!pagePermissions[`is${action}`]) return; // 🔒 Respect action-level permission
 
         setPermissions((prev) => ({
             ...prev,
@@ -125,7 +127,7 @@ const UserRolePermissions = () => {
     };
 
     const toggleSelectAll = (action) => {
-        if (!pagePermissions[`is${action}`]) return;
+        //if (!pagePermissions[`is${action}`]) return;
 
         const allChecked = pages.every((p) => permissions[p.id]?.[action]);
         const updated = { ...permissions };
@@ -163,6 +165,7 @@ const UserRolePermissions = () => {
                 delete: permissions[p.id]?.Delete || false,
                 print: permissions[p.id]?.Print || false,
                 download: permissions[p.id]?.Download || false,
+                post: permissions[p.id]?.Post || false,
             })),
         };
 
@@ -214,7 +217,6 @@ const UserRolePermissions = () => {
                                         type="checkbox"
                                         checked={isActionFullySelected(a)}
                                         onChange={() => toggleSelectAll(a)}
-                                        disabled={!pagePermissions[`is${a}`]} // 🔒 Disable if no permission
                                     />
                                 </th>
                             ))}
@@ -230,7 +232,6 @@ const UserRolePermissions = () => {
                                             type="checkbox"
                                             checked={permissions[page.id]?.[a] || false}
                                             onChange={() => togglePermission(page.id, a)}
-                                            disabled={!pagePermissions[`is${a}`]} // 🔒 Disable if no permission
                                         />
                                     </td>
                                 ))}

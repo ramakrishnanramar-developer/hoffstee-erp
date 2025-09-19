@@ -16,6 +16,7 @@ import LedgersPage from '../pages/LedgersPage';
 import TaxMasterPage from '../pages/TaxMasterPage';
 import VoucherTypesPage from '../pages/VoucherTypesPage';
 import UserRolePermissions from '../pages/UserRolePermissions';
+import PaymentVoucher from '../pages/PaymentVoucher';
 
 export const routeRegistry = {
     '/login': Login,
@@ -35,5 +36,6 @@ export const routeRegistry = {
     '/ledgers': LedgersPage,
     '/taxmasters': TaxMasterPage,
     '/vouchertypes': VoucherTypesPage,
-    '/userrolepermissions': UserRolePermissions
+    '/userrolepermissions': UserRolePermissions,
+    '/payment': PaymentVoucher
 };

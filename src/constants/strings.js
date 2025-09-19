@@ -12,6 +12,7 @@
         Sub_Modules: "submodules",
         Pages: "pages",
         Roles: "roles",
+        PaymentVoucher:"payment",
     },
 };
 
