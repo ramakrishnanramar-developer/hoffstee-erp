@@ -1,0 +1,16 @@
+﻿.action-buttons {
+    display: flex;
+    justify-content: center; /* center horizontally */
+    gap: 20px; /* space between buttons */
+    margin-top: 20px; /* add some spacing from above */
+}
+
+    .action-buttons .form-column {
+        flex: 0; /* prevent stretching */
+    }
+
+        .action-buttons .form-column button {
+            width: 100px; /* fixed width for all buttons */
+            padding: 10px 0; /* vertical padding */
+            text-align: center;
+        }

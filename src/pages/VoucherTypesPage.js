@@ -7,6 +7,7 @@ import {
     getVoucherTypeById,
     updateVoucherType,
     deleteVoucherType,
+    getRoles,
     getPermissionsByPage,   // ✅ added
 } from "../services/authService";
 import STRINGS from "../constants/strings"; // ✅ for page constant
@@ -28,6 +29,9 @@ const VoucherTypePage = () => {
         startingNumber: 1,
         isActive: true,
     });
+    const [roles, setRoles] = useState([]);
+    const [selectedApprovedBy, setApprovedBy] = useState("");
+    const [selectedVerifiedBy, setVerifiedBy] = useState("");
     const [editingId, setEditingId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [confirmDeleteId, setConfirmDeleteId] = useState(null);
@@ -43,9 +47,17 @@ const VoucherTypePage = () => {
 
     useEffect(() => {
         loadPermissions();
+        loadRoles();
         loadVoucherTypes();
     }, []);
-
+    const loadRoles = async () => {
+        try {
+            let roleData = await getRoles();
+            setRoles(roleData?.output || []);
+        } catch (err) {
+            console.error("Failed to load roles:", err);
+        }
+    };
     const loadPermissions = async () => {
         try {
             const data = await getPermissionsByPage(STRINGS.PAGES.Voucher_Types);
@@ -70,6 +82,10 @@ const VoucherTypePage = () => {
 
         if (!formData.code.trim() || !formData.name.trim()) {
             toast.error("Code and Name are required");
+            return;
+        }
+        if (!formData.approveUserRoleId && !formData.verifiedUserRoleId) {
+            toast.error("Either ApproveUserRoleId or VerifiedUserRoleId must be selected");
             return;
         }
 
@@ -108,6 +124,8 @@ const VoucherTypePage = () => {
             suffix: "",
             startingNumber: 1,
             isActive: true,
+            approveUserRoleId: null,
+            verifiedUserRoleId: null
         });
         setEditingId(null);
         setIsModalOpen(false);
@@ -133,6 +151,8 @@ const VoucherTypePage = () => {
                 suffix: data.suffix || "",
                 startingNumber: data.startingNumber ?? 1,
                 isActive: data.isActive ?? true,
+                approveUserRoleId: data.approveUserRoleId || null,
+                verifiedUserRoleId: data.verifiedUserRoleId || null,
             });
 
             setEditingId(data.id);
@@ -241,6 +261,36 @@ const VoucherTypePage = () => {
                         min={1}
                         required
                     />
+                    <select
+                        className="form-select"
+                        value={formData.approveUserRoleId ?? ""}
+                        onChange={(e) =>
+                            setFormData({ ...formData, approveUserRoleId: e.target.value || null })
+                        }
+                    >
+                        <option value="">-- Select Approved By Role --</option>
+                        {roles.map((r) => (
+                            <option key={r.id} value={r.id}>
+                                {r.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select
+                        className="form-select"
+                        value={formData.verifiedUserRoleId ?? ""}
+                        onChange={(e) =>
+                            setFormData({ ...formData, verifiedUserRoleId: e.target.value || null })
+                        }
+                    >
+                        <option value="">-- Select Verified By Role --</option>
+                        {roles.map((r) => (
+                            <option key={r.id} value={r.id}>
+                                {r.name}
+                            </option>
+                        ))}
+                    </select>
+
                     <label className="switch">
                         <input
                             type="checkbox"

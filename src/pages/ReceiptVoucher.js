@@ -18,7 +18,7 @@ import { allowTwoDecimals, handleDecimalPaste } from "../utils/inputUtils";
 
 Modal.setAppElement("#root");
 
-const PaymentVoucher = () => {
+const ReceiptVoucher = () => {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id"); // id = "123"
     console.log(id);
@@ -29,9 +29,8 @@ const PaymentVoucher = () => {
         voucherDate: "",
         referenceNo: "",
         narration: "",
-        approvedOrVerifiedBy: "",
         amount: 0,
-        verifiedBy: null,
+        approvedOrVerifiedBy: null,
         entries: [
             { id: 0, ledgerID: 0, debitAmount: 0, creditAmount: 0, lineNarration: "" },
         ],
@@ -53,8 +52,7 @@ const PaymentVoucher = () => {
             voucherDate: "",
             referenceNo: "",
             narration: "",
-            approvedOrVerifiedBy: "",
-            verifiedBy: null,
+            approvedOrVerifiedBy: null,
             entries: [
                 { id: 0, ledgerID: 0, debitAmount: 0, creditAmount: 0, lineNarration: "" },
             ],
@@ -90,8 +88,8 @@ const PaymentVoucher = () => {
                     voucherDate: v.voucherDate,
                     referenceNo: v.referenceNo,
                     narration: v.narration,
+                    approvedBy: v.approvedBy || null,
                     approvedOrVerifiedBy: v.approvedOrVerifiedBy,
-                    verifiedBy: v.verifiedBy || null,
                     amount: v.amount || 0,
                     entries: v.entries.map((e) => ({
                         id: e.id,
@@ -109,7 +107,7 @@ const PaymentVoucher = () => {
     };
     const GenerateCode = async (id) => {
         try {
-            const data = await GenerateVoucherCode(STRINGS.Codes.PaymentVoucher, id || 0 == 0 ? false : true);
+            const data = await GenerateVoucherCode(STRINGS.Codes.ReceiptVoucher, id || 0 == 0 ? false : true);
             setFormData((prev) => ({
                 ...prev,
                 voucherNumber: data.output.voucherCode,
@@ -123,7 +121,7 @@ const PaymentVoucher = () => {
 
     const loadPermissions = async () => {
         try {
-            const data = await getPermissionsByPage(STRINGS.PAGES.PaymentVoucher);
+            const data = await getPermissionsByPage(STRINGS.PAGES.ReceiptVoucher);
             setPermissions(data.output || {});
         } catch {
             toast.error("Failed to load permissions");
@@ -179,7 +177,7 @@ const PaymentVoucher = () => {
             return;
         }
         if (!formData.approvedOrVerifiedBy) {
-            toast.error("Please select an approver");
+            toast.error("Please select an Verifier");
             return;
         }
         if (formData.entries.length === 0) {
@@ -238,14 +236,14 @@ const PaymentVoucher = () => {
                     return;
                 }
                 await UpdateVouchers(editingId, payload);
-                toast.success('Payment Voucher updated successfully');
+                toast.success('Receipt Voucher updated successfully');
             } else {
                 if (!permissions.isAdd) {
                     toast.error("You don't have permission to create pages");
                     return;
                 }
                 await CreateVouchers(payload);
-                toast.success('Payment Voucher created successfully');
+                toast.success('Receipt Voucher created successfully');
             }
 
             // Remove the `id` query parameter
@@ -261,7 +259,7 @@ const PaymentVoucher = () => {
 
     return (
         <div className="modules-page">
-            <h2>🧾 {editingId ? "Edit" : "Create"} Payment Voucher</h2>
+            <h2>🧾 {editingId ? "Edit" : "Create"} Receipt Voucher</h2>
 
             <form onSubmit={handleSubmit} className="module-form">
                 {/* Header section */}
@@ -407,9 +405,9 @@ const PaymentVoucher = () => {
                     ➕ Add Row
                 </button>
 
-                {/* Approved By */}
-                <div className="approved-section">
-                    <label>Approved By</label>
+                {/* Verified By */}
+                <div className="verified-section">
+                    <label>Verified By</label>
                     <select
                         className="form-select"
                         name="approvedOrVerifiedBy"
@@ -468,4 +466,4 @@ const PaymentVoucher = () => {
     );
 };
 
-export default PaymentVoucher;
+export default ReceiptVoucher;

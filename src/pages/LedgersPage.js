@@ -8,11 +8,12 @@ import {
     updateLedger,
     deleteLedger,
     getAccountGroups,
-    getPermissionsByPage
+    getPermissionsByPage,
 } from "../services/authService"; // 👈 Added getPermissionsByPage
 import "react-toastify/dist/ReactToastify.css";
 import "./company.css";
 import STRINGS from "../constants/strings"; // 👈 for page constant
+import { buildHierarchy } from "../utils/hierarchyHelper";
 
 Modal.setAppElement("#root");
 
@@ -171,7 +172,11 @@ const LedgersPage = () => {
             toast.error("Delete failed");
         }
     };
-
+    const transformedLedgers = ledgers.map(l => ({
+        id: l.id,
+        name: l.name,
+        parentId: l.parentLedgerID ?? 0 // fallback if null
+    }));
     const resetForm = () => {
         setFormData({
             id: null,
@@ -244,7 +249,7 @@ const LedgersPage = () => {
                     />
 
                     {/* Account Group Dropdown */}
-                    <select
+                    <select className="form-select"
                         value={formData.accountGroupID || ""}
                         onChange={(e) =>
                             setFormData({
@@ -261,9 +266,27 @@ const LedgersPage = () => {
                             </option>
                         ))}
                     </select>
-
-                    {/* Balance Type */}
+                    {/* ✅ Parent Ledger Dropdown with hierarchy */}
                     <select
+                        className="form-select"
+                        value={formData.parentLedgerID || ""}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                parentLedgerID: e.target.value ? parseInt(e.target.value) : null,
+                            })
+                        }
+                    >
+                        <option value="">-- Select Parent Ledger (Optional) --</option>
+                        const transformedLedgers = convertLedgersForHierarchy(ledgers, "parentLedgerID");
+                        {buildHierarchy(transformedLedgers).map((ledger) => (
+                            <option key={ledger.id} value={ledger.id}>
+                                {ledger.displayName}
+                            </option>
+                        ))}
+                    </select>
+                    {/* Balance Type */}
+                    <select className="form-select"
                         value={formData.balanceType}
                         onChange={(e) => setFormData({ ...formData, balanceType: e.target.value })}
                         required

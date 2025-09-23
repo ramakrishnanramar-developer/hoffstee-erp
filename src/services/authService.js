@@ -9,7 +9,7 @@ export const BASE_URL = 'https://localhost:7260/api';
 const handlePostPutError = (error, action, endpoint) => {
     if (error.response && error.response.data) {
         console.error(`${action} ${endpoint} failed:`, error.response.data);
-        throw new Error(error.response.data.Message || `${action} failed`);
+        throw new Error(error.response.data.message || `${action} failed`);
     } else {
         console.error(`${action} ${endpoint} failed:`, error.message);
         throw new Error(`${action} failed`);
@@ -529,15 +529,7 @@ export const deleteLedger = async (id) => {
         throw error;
     }
 };
-export const getParentLedgers = async (id) => {
-    try {
-        const response = await api.get(`/Ledgers/dropdown`);
-        return response.data;
-    } catch (error) {
-        console.error(`GET /Ledgers/dropdown failed:`, error);
-        throw error;
-    }
-};
+
 
 // get AccountGroups
 export const getAccountGroups = async () => {
@@ -722,7 +714,84 @@ export const getPermissionsByPage = async (page) => {
         const response = await api.get(`/PageAccessPermission/page/${page}`);
         return response.data;
     } catch (error) {
-        console.error("GET /PageAccessPermission failed:", error);
+        handlePostPutError(error, 'GET', `/PageAccessPermission/page/${page}`);
+    }
+};
+export const GetLedgersDropdown = async () => {
+    try {
+        const response = await api.get(`/Ledgers/dropdown`);
+        return response.data;
+    }
+    catch (error) {
+        handlePostPutError(error, 'GET', `/Ledgers/dropdown`);
+    }
+};
+export const GenerateVoucherCode = async (code, isEdit) => {
+    try {
+        const response = await api.get(`/Vouchers/vouchercode/${code}/edit/${isEdit}`);
+        return response.data;
+    }
+    catch (error) {
+        handlePostPutError(error, 'GET', `/Vouchers/vouchercode/${code}/edit/${isEdit}`);
+    }
+};
+
+export const CreateVouchers = async (data) => {
+    try {
+        const response = await api.post('/Vouchers', data);
+        return response.data;
+    } catch (error) {
+        handlePostPutError(error, 'POST', `/Vouchers`);
+    }
+};
+
+//get Voucher ById
+
+export const GetVouchersById = async (id) => {
+    try {
+        const response = await api.get(`/Vouchers/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`GET /Vouchers/${id} failed:`, error);
+        throw error;
+    }
+};
+
+//update Voucher
+export const UpdateVouchers = async (id, data) => {
+    try {
+        const response = await api.put(`/Vouchers/${id}`, data);
+        return response.data;
+    } catch (error) {
+        handlePostPutError(error, 'PUT', `/Vouchers/${id}`);
+    }
+};
+
+//Voucher Types
+export const GetVouchersList = async (code) => {
+    try {
+        const response = await api.get(`/Vouchers/type/${code}`);
+        return response.data;
+    } catch (error) {
+        console.error('GET /Vouchers failed:', error);
+        throw error;
+    }
+};
+export const GetVoucherEntriesById = async (id) => {
+    try {
+        const response = await api.get(`/Vouchers/${id}/entries`);
+        return response.data;
+    } catch (error) {
+        console.error(`GET /Vouchers/${id}/entries failed:`, error);
+        throw error;
+    }
+};
+export const DeleteVoucher = async (id) => {
+    try {
+        const response = await api.delete(`/Vouchers/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`DELETE /VoucherTypes/${id} failed:`, error);
         throw error;
     }
 };

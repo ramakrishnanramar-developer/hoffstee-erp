@@ -17,6 +17,9 @@ import TaxMasterPage from '../pages/TaxMasterPage';
 import VoucherTypesPage from '../pages/VoucherTypesPage';
 import UserRolePermissions from '../pages/UserRolePermissions';
 import PaymentVoucher from '../pages/PaymentVoucher';
+import PaymentVoucherList from '../pages/PaymentvoucherList';
+import ReceiptVoucher from '../pages/ReceiptVoucher';
+import ReceiptVoucherList from '../pages/ReceiptvoucherList';
 
 export const routeRegistry = {
     '/login': Login,
@@ -37,5 +40,8 @@ export const routeRegistry = {
     '/taxmasters': TaxMasterPage,
     '/vouchertypes': VoucherTypesPage,
     '/userrolepermissions': UserRolePermissions,
-    '/payment': PaymentVoucher
+    '/payment': PaymentVoucher,
+    '/paymentlist': PaymentVoucherList,
+    '/receipt': ReceiptVoucher,
+    '/receiptlist': ReceiptVoucherList
 };

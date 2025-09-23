@@ -12,7 +12,11 @@
         Sub_Modules: "submodules",
         Pages: "pages",
         Roles: "roles",
-        PaymentVoucher:"payment",
+        PaymentVoucher: "payment",
+    },
+    Codes: {
+        PaymentVoucher: 'VCH003',
+        ReceiptVoucher:'VCH004'
     },
 };
 
