@@ -8,7 +8,8 @@ import {
     GetVoucherCode,
     CreateVouchers,
     UpdateVouchers,
-    GetVouchersById
+    GetVouchersById,
+    getTransactionTypeDropdown
 } from "../services/authService";
 import STRINGS from "../constants/strings";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,7 +19,7 @@ import { allowTwoDecimals, handleDecimalPaste } from "../utils/inputUtils";
 
 Modal.setAppElement("#root");
 
-const ReceiptVoucher = () => {
+const NoteVoucher = () => {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id"); // id = "123"
     console.log(id);
@@ -26,6 +27,7 @@ const ReceiptVoucher = () => {
         id: null,  // ✅ supports Edit
         voucherTypeId: 0,
         voucherNumber: "",
+        transactionTypeId:0,
         voucherDate: "",
         referenceNo: "",
         narration: "",
@@ -36,6 +38,7 @@ const ReceiptVoucher = () => {
         ],
     });
     const [ledgers, setLedgers] = useState([]);
+    const [transactionTypes, setTransactionTypes] = useState([]);
     const [users, setUsers] = useState([]);
     const [permissions, setPermissions] = useState({
         isAdd: false,
@@ -51,6 +54,7 @@ const ReceiptVoucher = () => {
             voucherNumber: "",
             voucherDate: "",
             referenceNo: "",
+            transactionTypeId: 0,
             narration: "",
             approvedOrVerifiedBy: null,
             entries: [
@@ -84,6 +88,7 @@ const ReceiptVoucher = () => {
                 setFormData({
                     id: v.id,
                     voucherTypeId: v.voucherTypeID,
+                    transactionTypeId: v.transactionTypeId,
                     voucherNumber: v.voucherNumber,
                     voucherDate: v.voucherDate,
                     referenceNo: v.referenceNo,
@@ -107,7 +112,7 @@ const ReceiptVoucher = () => {
     };
     const GenerateCode = async (id) => {
         try {
-            const data = await GetVoucherCode(id, STRINGS.Codes.ReceiptVoucher);
+            const data = await GetVoucherCode(id, STRINGS.Codes.NoteVoucher);
             setFormData((prev) => ({
                 ...prev,
                 voucherNumber: data.output.voucherCode || prev.voucherNumber,
@@ -121,7 +126,7 @@ const ReceiptVoucher = () => {
 
     const loadPermissions = async () => {
         try {
-            const data = await getPermissionsByPage(STRINGS.PAGES.ReceiptVoucher);
+            const data = await getPermissionsByPage(STRINGS.PAGES.NoteVoucher);
             setPermissions(data.output || {});
         } catch {
             toast.error("Failed to load permissions");
@@ -132,11 +137,19 @@ const ReceiptVoucher = () => {
         try {
             const data = await GetLedgersDropdown();
             setLedgers(data.output || []);
+            loadTransactionTypes();
         } catch {
             toast.error("Failed to load ledgers");
         }
     };
-
+    const loadTransactionTypes = async () => {
+        try {
+            const data = await getTransactionTypeDropdown();
+            setTransactionTypes(data.output || []);
+        } catch {
+            toast.error("Failed to load Transaction types");
+        }
+    };
     // Handle change for main form fields
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -178,6 +191,10 @@ const ReceiptVoucher = () => {
         }
         if (!formData.approvedOrVerifiedBy) {
             toast.error("Please select an Verifier");
+            return;
+        }
+        if (!formData.transactionTypeId) {
+            toast.error("Please select an Transaction Type");
             return;
         }
         if (formData.entries.length === 0) {
@@ -236,14 +253,14 @@ const ReceiptVoucher = () => {
                     return;
                 }
                 await UpdateVouchers(editingId, payload);
-                toast.success('Receipt Voucher updated successfully');
+                toast.success('Credit/Debit note updated successfully');
             } else {
                 if (!permissions.isAdd) {
                     toast.error("You don't have permission to create pages");
                     return;
                 }
                 await CreateVouchers(payload);
-                toast.success('Receipt Voucher created successfully');
+                toast.success('Credit/Debit note created successfully');
             }
 
             // Remove the `id` query parameter
@@ -259,7 +276,7 @@ const ReceiptVoucher = () => {
 
     return (
         <div className="modules-page">
-            <h2>🧾 {editingId ? "Edit" : "Create"} Receipt Voucher</h2>
+            <h2>🧾 {editingId ? "Edit" : "Create"} Credit/Debit Note</h2>
 
             <form onSubmit={handleSubmit} className="module-form">
                 {/* Header section */}
@@ -293,15 +310,22 @@ const ReceiptVoucher = () => {
                     </div>
                     <div className="form-row">
                         <div className="form-column">
-                            <label>Reference No.</label>
+                            <label>Transaction Type</label>
                         </div>
                         <div className="form-column">
-                            <input
-                                type="text"
-                                name="referenceNo"
-                                value={formData.referenceNo}
+                            <select
+                                className="form-select"
+                                name="transactionTypeId"
+                                value={formData.transactionTypeId}
                                 onChange={handleChange}
-                            />
+                            >
+                                <option value="">-- Select Transaction Type --</option>
+                                {transactionTypes.map((u) => (
+                                    <option key={u.id} value={u.id}>
+                                        {u.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <div className="form-row">
@@ -407,7 +431,7 @@ const ReceiptVoucher = () => {
 
                 {/* Verified By */}
                 <div className="verified-section">
-                    <label>Verified By</label>
+                    <label>Verified/ Approved By</label>
                     <select
                         className="form-select"
                         name="approvedOrVerifiedBy"
@@ -466,4 +490,4 @@ const ReceiptVoucher = () => {
     );
 };
 
-export default ReceiptVoucher;
+export default NoteVoucher;

@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./SubModulesPage.css";
 import STRINGS from "../constants/strings";
 
-const PaymentVoucherList = () => {
+const ContraVoucherList = () => {
     const [activeRow, setActiveRow] = useState(null);
     const [vouchers, setVouchers] = useState([]);
     const [expandedRows, setExpandedRows] = useState({}); // keep track of expanded rows
@@ -25,7 +25,7 @@ const PaymentVoucherList = () => {
     const loadVouchers = async () => {
         try {
             loadPermissions();
-            const res = await GetVouchersList(STRINGS.Codes.PaymentVoucher);
+            const res = await GetVouchersList(STRINGS.Codes.ContraVoucher);
             setVouchers(res.output || []);
         } catch (err) {
             toast.error("Failed to load vouchers");
@@ -75,7 +75,7 @@ const PaymentVoucherList = () => {
         //}
         try {
             await DeleteVoucher(id);
-            toast.success('Payment Voucher deleted!');
+            toast.success('Contra Voucher deleted!');
             setConfirmDeleteId(null);
             loadVouchers();
         } catch (err) {
@@ -84,13 +84,13 @@ const PaymentVoucherList = () => {
     };
     // Edit voucher
     const handleEdit = (voucherId) => {
-        // Redirect to PaymentVoucher page with id query param
-        window.location.href = `/payment?id=${voucherId}`;
+        // Redirect to ContraVoucher page with id query param
+        window.location.href = `/Contra?id=${voucherId}`;
     };
 
     return (
         <div className="modules-page">
-            <h2>🧾 Payment Vouchers</h2>
+            <h2>🧾 Contra Vouchers</h2>
             {permissions.isView && (
                 <table className="module-table">
                     <thead>
@@ -98,7 +98,8 @@ const PaymentVoucherList = () => {
                             <th>Voucher No.</th>
                             <th>Date</th>
                             <th>Amount</th>
-                            <th>Approved By</th>
+                            <th>Transaction Type</th>
+                            <th>Verified By</th>
                             {(permissions.isEdit || permissions.isDelete) && <th>Actions</th>}
                         </tr>
                     </thead>
@@ -113,6 +114,7 @@ const PaymentVoucherList = () => {
                                     <td>{v.voucherNumber}</td>
                                     <td>{v.voucherDate}</td>
                                     <td>{v.amount}</td>
+                                    <td>{v.transactionTypeName}</td>
                                     <td>{v.approvedOrVerifiedByName || "-"}</td>
                                     <td>
                                         <button className="action-btn edit" onClick={() => toggleEntries(v.id)}>
@@ -176,4 +178,4 @@ const PaymentVoucherList = () => {
     );
 };
 
-export default PaymentVoucherList;
+export default ContraVoucherList;

@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./SubModulesPage.css";
 import STRINGS from "../constants/strings";
 
-const PaymentVoucherList = () => {
+const JournalVoucherList = () => {
     const [activeRow, setActiveRow] = useState(null);
     const [vouchers, setVouchers] = useState([]);
     const [expandedRows, setExpandedRows] = useState({}); // keep track of expanded rows
@@ -25,7 +25,7 @@ const PaymentVoucherList = () => {
     const loadVouchers = async () => {
         try {
             loadPermissions();
-            const res = await GetVouchersList(STRINGS.Codes.PaymentVoucher);
+            const res = await GetVouchersList(STRINGS.Codes.JournalVoucher);
             setVouchers(res.output || []);
         } catch (err) {
             toast.error("Failed to load vouchers");
@@ -75,7 +75,7 @@ const PaymentVoucherList = () => {
         //}
         try {
             await DeleteVoucher(id);
-            toast.success('Payment Voucher deleted!');
+            toast.success('Journal Voucher deleted!');
             setConfirmDeleteId(null);
             loadVouchers();
         } catch (err) {
@@ -84,13 +84,13 @@ const PaymentVoucherList = () => {
     };
     // Edit voucher
     const handleEdit = (voucherId) => {
-        // Redirect to PaymentVoucher page with id query param
-        window.location.href = `/payment?id=${voucherId}`;
+        // Redirect to JournalVoucher page with id query param
+        window.location.href = `/journal?id=${voucherId}`;
     };
 
     return (
         <div className="modules-page">
-            <h2>🧾 Payment Vouchers</h2>
+            <h2>🧾 Journal Vouchers</h2>
             {permissions.isView && (
                 <table className="module-table">
                     <thead>
@@ -176,4 +176,4 @@ const PaymentVoucherList = () => {
     );
 };
 
-export default PaymentVoucherList;
+export default JournalVoucherList;

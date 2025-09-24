@@ -1,6 +1,7 @@
 // src/services/authService.js
 import axios from 'axios';
 import api from './axiosInstance';
+import STRINGS from "../constants/strings";
 
 export const BASE_URL = 'https://localhost:7260/api';
 //export const BASE_URL = 'https://hoffstee.azurewebsites.net/api';
@@ -726,6 +727,12 @@ export const GetLedgersDropdown = async () => {
         handlePostPutError(error, 'GET', `/Ledgers/dropdown`);
     }
 };
+export const GetVoucherCode = async (id, code) => {
+    const idNum = Number(id);
+    const isNew = id == null || idNum <= 0;
+    const data = await GenerateVoucherCode(code, !isNew);
+    return data;
+}
 export const GenerateVoucherCode = async (code, isEdit) => {
     try {
         const response = await api.get(`/Vouchers/vouchercode/${code}/edit/${isEdit}`);
@@ -792,6 +799,72 @@ export const DeleteVoucher = async (id) => {
         return response.data;
     } catch (error) {
         console.error(`DELETE /VoucherTypes/${id} failed:`, error);
+        throw error;
+    }
+};
+
+// get TransactionTypes
+export const getTransactionTypes = async () => {
+    try {
+        const response = await api.get('/TransactionTypes');
+        return response.data;
+    } catch (error) {
+        console.error('GET /TransactionTypes failed:', error);
+        throw error;
+    }
+};
+
+//create TransactionTypes
+
+export const createTransactionType = async (data) => {
+    try {
+        const response = await api.post('/TransactionTypes', data);
+        return response.data;
+    } catch (error) {
+        handlePostPutError(error, 'POST', `/TransactionTypes`);
+    }
+};
+
+//get TransactionTypes ById
+
+export const getTransactionTypeById = async (id) => {
+    try {
+        const response = await api.get(`/TransactionTypes/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`GET /TransactionTypes/${id} failed:`, error);
+        throw error;
+    }
+};
+
+//update TransactionTypes
+
+export const updateTransactionType = async (id, data) => {
+    try {
+        const response = await api.put(`/TransactionTypes/${id}`, data);
+        return response.data;
+    } catch (error) {
+        handlePostPutError(error, 'PUT', `/TransactionTypes/${id}`);
+    }
+};
+
+// delete TransactionTypes
+
+export const deleteTransactionType = async (id) => {
+    try {
+        const response = await api.delete(`/TransactionTypes/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`DELETE /TransactionTypes/${id} failed:`, error);
+        throw error;
+    }
+};
+export const getTransactionTypeDropdown = async () => {
+    try {
+        const response = await api.get('/TransactionTypes/dropdown');
+        return response.data;
+    } catch (error) {
+        console.error('GET /TransactionTypes dropdown failed:', error);
         throw error;
     }
 };

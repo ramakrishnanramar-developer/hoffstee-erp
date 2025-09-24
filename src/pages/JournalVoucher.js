@@ -18,7 +18,7 @@ import { allowTwoDecimals, handleDecimalPaste } from "../utils/inputUtils";
 
 Modal.setAppElement("#root");
 
-const ReceiptVoucher = () => {
+const JournalVoucher = () => {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id"); // id = "123"
     console.log(id);
@@ -29,8 +29,9 @@ const ReceiptVoucher = () => {
         voucherDate: "",
         referenceNo: "",
         narration: "",
+        approvedOrVerifiedBy: "",
         amount: 0,
-        approvedOrVerifiedBy: null,
+        verifiedBy: null,
         entries: [
             { id: 0, ledgerID: 0, debitAmount: 0, creditAmount: 0, lineNarration: "" },
         ],
@@ -52,7 +53,8 @@ const ReceiptVoucher = () => {
             voucherDate: "",
             referenceNo: "",
             narration: "",
-            approvedOrVerifiedBy: null,
+            approvedOrVerifiedBy: "",
+            verifiedBy: null,
             entries: [
                 { id: 0, ledgerID: 0, debitAmount: 0, creditAmount: 0, lineNarration: "" },
             ],
@@ -60,13 +62,13 @@ const ReceiptVoucher = () => {
         setEditingId(null);
     };
     useEffect(() => {
-        LoadPages();
+        LoadPages(id);
         if (id) {
             setEditingId(id);
             loadVoucherById(id);
         }
     }, []);
-    const LoadPages = async () => {
+    const LoadPages = async (id) => {
         try {
             loadPermissions();
             loadLedgers();
@@ -88,8 +90,8 @@ const ReceiptVoucher = () => {
                     voucherDate: v.voucherDate,
                     referenceNo: v.referenceNo,
                     narration: v.narration,
-                    approvedBy: v.approvedBy || null,
                     approvedOrVerifiedBy: v.approvedOrVerifiedBy,
+                    verifiedBy: v.verifiedBy || null,
                     amount: v.amount || 0,
                     entries: v.entries.map((e) => ({
                         id: e.id,
@@ -107,7 +109,7 @@ const ReceiptVoucher = () => {
     };
     const GenerateCode = async (id) => {
         try {
-            const data = await GetVoucherCode(id, STRINGS.Codes.ReceiptVoucher);
+            const data = await GetVoucherCode(id, STRINGS.Codes.JournalVoucher);
             setFormData((prev) => ({
                 ...prev,
                 voucherNumber: data.output.voucherCode || prev.voucherNumber,
@@ -121,7 +123,7 @@ const ReceiptVoucher = () => {
 
     const loadPermissions = async () => {
         try {
-            const data = await getPermissionsByPage(STRINGS.PAGES.ReceiptVoucher);
+            const data = await getPermissionsByPage(STRINGS.PAGES.JournalVoucher);
             setPermissions(data.output || {});
         } catch {
             toast.error("Failed to load permissions");
@@ -177,7 +179,7 @@ const ReceiptVoucher = () => {
             return;
         }
         if (!formData.approvedOrVerifiedBy) {
-            toast.error("Please select an Verifier");
+            toast.error("Please select an approver");
             return;
         }
         if (formData.entries.length === 0) {
@@ -236,14 +238,14 @@ const ReceiptVoucher = () => {
                     return;
                 }
                 await UpdateVouchers(editingId, payload);
-                toast.success('Receipt Voucher updated successfully');
+                toast.success('Journal Voucher updated successfully');
             } else {
                 if (!permissions.isAdd) {
                     toast.error("You don't have permission to create pages");
                     return;
                 }
                 await CreateVouchers(payload);
-                toast.success('Receipt Voucher created successfully');
+                toast.success('Journal Voucher created successfully');
             }
 
             // Remove the `id` query parameter
@@ -259,7 +261,7 @@ const ReceiptVoucher = () => {
 
     return (
         <div className="modules-page">
-            <h2>🧾 {editingId ? "Edit" : "Create"} Receipt Voucher</h2>
+            <h2>🧾 {editingId ? "Edit" : "Create"} Journal Voucher</h2>
 
             <form onSubmit={handleSubmit} className="module-form">
                 {/* Header section */}
@@ -405,9 +407,9 @@ const ReceiptVoucher = () => {
                     ➕ Add Row
                 </button>
 
-                {/* Verified By */}
-                <div className="verified-section">
-                    <label>Verified By</label>
+                {/* Approved By */}
+                <div className="approved-section">
+                    <label>Approved By</label>
                     <select
                         className="form-select"
                         name="approvedOrVerifiedBy"
@@ -466,4 +468,4 @@ const ReceiptVoucher = () => {
     );
 };
 
-export default ReceiptVoucher;
+export default JournalVoucher;

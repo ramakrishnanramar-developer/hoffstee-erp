@@ -3,7 +3,8 @@ import { toast } from "react-toastify";
 import {
     GetVouchersList,
     DeleteVoucher,
-    GetVoucherEntriesById
+    GetVoucherEntriesById,
+     getPermissionsByPage
 } from "../services/authService";
 import "react-toastify/dist/ReactToastify.css";
 import "./SubModulesPage.css";
@@ -15,9 +16,15 @@ const ReceiptVoucherList = () => {
     const [expandedRows, setExpandedRows] = useState({}); // keep track of expanded rows
     const [voucherEntries, setVoucherEntries] = useState({}); // store entries per voucher
     const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+    const [permissions, setPermissions] = useState({
+        isEdit: false,
+        isView: false,
+        isDelete: false,
+    });
     // Load vouchers
     const loadVouchers = async () => {
         try {
+            loadPermissions();
             const res = await GetVouchersList(STRINGS.Codes.ReceiptVoucher);
             setVouchers(res.output || []);
         } catch (err) {
@@ -25,7 +32,14 @@ const ReceiptVoucherList = () => {
             console.error(err);
         }
     };
-
+    const loadPermissions = async () => {
+        try {
+            const data = await getPermissionsByPage(STRINGS.PAGES.JournalVoucher);
+            setPermissions(data.output || {});
+        } catch {
+            toast.error("Failed to load permissions");
+        }
+    };
     useEffect(() => {
         loadVouchers();
     }, []);
@@ -77,7 +91,7 @@ const ReceiptVoucherList = () => {
     return (
         <div className="modules-page">
             <h2>🧾 Receipt Vouchers</h2>
-
+			{permissions.isView && (
             <table className="module-table">
                 <thead>
                     <tr>
@@ -85,7 +99,7 @@ const ReceiptVoucherList = () => {
                         <th>Date</th>
                         <th>Amount</th>
                         <th>Verified By</th>
-                        <th>Actions</th>
+                        {(permissions.isEdit || permissions.isDelete) && <th>Actions</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -104,8 +118,12 @@ const ReceiptVoucherList = () => {
                                     <button className="action-btn edit" onClick={() => toggleEntries(v.id)}>
                                         {expandedRows[v.id] ? "Voucher Entries" : "Voucher Entries"}
                                     </button>
+                                        {permissions.isEdit && (
                                     <button className="action-btn edit" onClick={() => handleEdit(v.id)}>Edit</button>
+                                        )}
+                                        {permissions.isDelete && (
                                     <button className="action-btn delete" onClick={() => handleDeleteRequest(v.id)}>Delete</button>
+                                        )}
                                 </td>
                             </tr>
                             {expandedRows[v.id] && voucherEntries[v.id] && (
@@ -138,6 +156,7 @@ const ReceiptVoucherList = () => {
                     ))}
                 </tbody>
             </table>
+            )}
             {confirmDeleteId !== null && (
                 <div className="confirm-modal">
                     <div className="confirm-box">

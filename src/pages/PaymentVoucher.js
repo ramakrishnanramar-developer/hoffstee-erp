@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import {
     GetLedgersDropdown,
     getPermissionsByPage,
-    GenerateVoucherCode,
+    GetVoucherCode,
     CreateVouchers,
     UpdateVouchers,
     GetVouchersById
@@ -62,6 +62,7 @@ const PaymentVoucher = () => {
         setEditingId(null);
     };
     useEffect(() => {
+        loadPermissions();
         LoadPages();
         if (id) {
             setEditingId(id);
@@ -109,10 +110,10 @@ const PaymentVoucher = () => {
     };
     const GenerateCode = async (id) => {
         try {
-            const data = await GenerateVoucherCode(STRINGS.Codes.PaymentVoucher, id || 0 == 0 ? false : true);
+            const data = await GetVoucherCode(id, STRINGS.Codes.PaymentVoucher);
             setFormData((prev) => ({
                 ...prev,
-                voucherNumber: data.output.voucherCode,
+                voucherNumber: data.output.voucherCode || prev.voucherNumber,
                 voucherTypeId: data.output.voucherTypeId
             }));
             setUsers(data.output.users);
@@ -435,7 +436,7 @@ const PaymentVoucher = () => {
                         )}
                     </div>
                     <div className="form-column">
-                        {permissions.isAdd && (
+                        {permissions.isAdd && !(id !== 0 && !permissions.isEdit) && (
                             <button type="submit" name="action" value="save" className="save-btn">
                                 Save
                             </button>

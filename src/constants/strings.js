@@ -13,10 +13,18 @@
         Pages: "pages",
         Roles: "roles",
         PaymentVoucher: "payment",
+        ReceiptVoucher: "receipt",
+        JournalVoucher: "journal",
+        TransactionType: "transactiontype",
+        ContraVoucher: 'contra',
+        NoteVoucher: 'note',
     },
     Codes: {
         PaymentVoucher: 'VCH003',
-        ReceiptVoucher:'VCH004'
+        ReceiptVoucher: 'VCH004',
+        JournalVoucher: 'VCH005',
+        ContraVoucher: 'VCH006',
+        NoteVoucher:'VCH007'
     },
 };
 

@@ -20,6 +20,13 @@ import PaymentVoucher from '../pages/PaymentVoucher';
 import PaymentVoucherList from '../pages/PaymentvoucherList';
 import ReceiptVoucher from '../pages/ReceiptVoucher';
 import ReceiptVoucherList from '../pages/ReceiptvoucherList';
+import JournalVoucher from '../pages/JournalVoucher';
+import JournalVoucherList from '../pages/JournalvoucherList';
+import TransactionTypeMasterPage from '../pages/TransactionTypeMasterPage';
+import ContraVoucher from '../pages/ContraVoucher';
+import ContraVoucherList from '../pages/ContravoucherList';
+import NoteVoucher from '../pages/NoteVoucher';
+import NoteVoucherList from '../pages/NotevoucherList';
 
 export const routeRegistry = {
     '/login': Login,
@@ -43,5 +50,12 @@ export const routeRegistry = {
     '/payment': PaymentVoucher,
     '/paymentlist': PaymentVoucherList,
     '/receipt': ReceiptVoucher,
-    '/receiptlist': ReceiptVoucherList
+    '/receiptlist': ReceiptVoucherList,
+    '/journal': JournalVoucher,
+    '/journallist': JournalVoucherList,
+    '/transactiontype': TransactionTypeMasterPage,
+    '/contra': ContraVoucher,
+    '/contralist': ContraVoucherList,
+    '/note': NoteVoucher,
+    '/notelist': NoteVoucherList
 };
